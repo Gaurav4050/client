@@ -1,4 +1,5 @@
 // Signup.js
+import axios from 'axios';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
@@ -6,13 +7,19 @@ import { Link } from 'react-router-dom';
 const Signup = () => {
     const { register, handleSubmit, formState: { errors }, watch } = useForm();
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [profilePicture, setProfilePicture] = useState(null); 
     const password = watch("password");
 
-    const onSubmit = (data) => {
-        // Handle form submission, e.g., login request
-        console.log(data);
-        setShowSuccessMessage(true);
+    const onSubmit = async(data) => {
+        const payload = {
+            username:data.username,
+            email:data.email,
+            password:data.password,
+            // profilePicture:profilePicture
+        }
+        const response = await axios.post(`${process.env.REACT_APP_BASE_URI}/signup`, payload);
+        console.log(response);
     };
 
     const handleFileChange = (e) => {

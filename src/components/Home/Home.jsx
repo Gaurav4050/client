@@ -3,6 +3,12 @@ import axios from 'axios';
 import { useAuth } from '../../Context/useAuth';
 import toast from 'react-hot-toast';
 
+function returnAxiosInstance() {
+    return axios.create({
+        withCredentials: true
+    });
+}
+
 const Home = () => {
     const auth = useAuth();
     const [posts, setPosts] = useState([]);
@@ -11,9 +17,7 @@ const Home = () => {
 
     const fetchPosts = async () => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_BASE_URI}/posts?page=${currentPage}`, {
-                withCredentials: true
-            });
+            const response = await returnAxiosInstance().get(`${process.env.REACT_APP_BASE_URI}/posts?page=${currentPage}`);
             setPosts(response.data.posts);
             setTotalPages(Math.ceil(response.data.totalPages / 9));
         } catch (error) {
